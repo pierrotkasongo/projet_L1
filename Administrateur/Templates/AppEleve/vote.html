@@ -1,0 +1,38 @@
+{% extends 'BaseEleve.html' %}
+{% load static %}
+{% block BaseEleve %}
+{% if demarrerElection == True %}
+    {% if vote == False %}
+        {% for objet in allCandidat %}
+            <div class="container-fluid classe-block p-2 mb-2 mt-3">
+                <span class='name-classe'>{{objet.eleveId.userId.username | capfirst}} {{objet.eleveId.userId.first_name}} {{objet.eleveId.userId.last_name}}</span>
+                <span class='float-end'>
+                <i class="bi bi-check-circle" data-bs-toggle="modal" data-bs-target="#supprimer{{objet.eleveId.userId.id}}"></i>
+                </span>
+                <div class="modal fade" id="supprimer{{objet.eleveId.userId.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <i class="bi bi-exclamation-circle icon-modalSupprimer"></i>
+                    <p class="message-modal mb-3">Êtes-vous sûr de voter pour ce candidat ?</p>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+                        <a href="{% url 'electeur' objet.eleveId.userId.id %}" class='btn btn-danger'>Oui</a>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="contaimer center-div">
+            <img src="{% static '/images/vote.png' %}" class='img-fluid'>
+            <p class='text-center'>vote envoyé avec succès !</p>
+        </div>
+    {% endif %}
+{% else %}
+<div class="contaimer center-div">
+    <img src="{% static '/images/election.png' %}" class='img-fluid'>
+    <p class='text-center'>Aucune élection en cours !</p>
+</div>
+{% endif %}
+{% endblock BaseEleve %}

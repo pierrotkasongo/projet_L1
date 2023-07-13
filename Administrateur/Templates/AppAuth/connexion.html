@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+    <div class="container-fluid d-flex justify-content-center align-items-center main-connexion"><div class="row">
+        <div class="col-md-6">
+            <img src="{% static 'images/voting.png' %}" class='img-fluid' width='900' heigth='900'>
+        </div>
+        <div class="col-md-6">
+            {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{message.tags}} text-center">{{message}}</div>
+            {% endfor %}
+            {% endif %}
+            <form method="POST" action="{% url 'login' %}" id='formLogin'>
+                {% csrf_token %}
+                <div class="mb-2">
+                    <label for="email" class='form-label'>Adresse email</label>
+                    <input type="email" class='form-control mb-1' name='email' id='email'>
+                    <small id='valid-email'></small>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class='form-label'>Mot de passe</label>
+                    <input type="password" class='form-control mb-1' name='password' id='password'>
+                    <small id='valid-password'></small>
+                </div>
+                <input type="submit" class='btn btn-success w-100' value='Se connecter'>
+            </form>
+        </div>
+    </div>
+    <script src="{% static '/js/formLogin.js' %}"></script>
+{% endblock base %}

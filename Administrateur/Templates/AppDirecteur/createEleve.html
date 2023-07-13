@@ -1,0 +1,42 @@
+{% extends 'baseDirecteur.html' %}
+{% load static %}
+{% block baseDirecteur %}
+    {% if messages %}
+    {% for message in messages %}
+        <div class=" mt-4 alert {{message.tags}} text-center mt-3">{{message}}</div>
+    {% endfor %}
+    {% endif %}
+    <form action="" method="POST" class='mt-3' id='formUser'>
+        {% csrf_token %}
+        <div class="mb-2">
+            <label for="nom" class='form-label'>Nom</label>
+            <input type="text" class='form-control mb-2' name='nom' id='nom'>
+            <small id='valid-nom'></small>
+        </div>
+        <div class="mb-2">
+            <label for="postnom" class='form-label'>Postnom</label>
+            <input type="text" class='form-control mb-2' name='postnom' id='postnom'>
+            <small id='valid-postnom'></small>
+        </div>
+        <div class="mb-2">
+            <label for="prenom" class='form-label'>Prénom</label>
+            <input type="text" class='form-control mb-2' name='prenom' id='prenom'>
+            <small id='valid-prenom'></small>
+        </div>
+        <div class="mb-2">
+            <label for="email" class='form-label'>Adresse email</label>
+            <input type="text" class='form-control mb-2' name='email' id='email'>
+            <small id='valid-email'></small>
+        </div>
+        <div class="mb-3">
+            <label for="classe" class='form-label'>Classe</label>
+            <select name="classe" class='form-select'>
+                {% for objet in allClasse %}
+                    <option value="{{objet.id}}">{{objet.classe}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <input type="submit" class='w-100 btn btn-success' value='Enregistrer'>
+    </form>
+    <script src="{% static '/js/formUser.js' %}"></script>
+{% endblock baseDirecteur %}  

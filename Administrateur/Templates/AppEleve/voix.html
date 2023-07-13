@@ -1,0 +1,11 @@
+{% extends 'BaseEleve.html' %}
+{% load static %}
+{% block BaseEleve %}
+{% for objet in voix %}
+        <div class="container-fluid classe-block p-2 mb-2 mt-3">      
+            <span class='name-classe'>{{objet.candidatId__eleveId__userId__username | capfirst}} {{objet.candidatId__eleveId__userId__first_name | capfirst}} {{objet.candidatId__eleveId__userId__last_name | capfirst}}</span>
+            <span class='float-end name-classe'>{{objet.count}}</span>
+        </div>
+{% endfor %}
+{% endblock BaseEleve %}  
+
