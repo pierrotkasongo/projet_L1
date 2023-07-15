@@ -1,0 +1,102 @@
+{% extends 'BaseAdmin.html' %}
+{% load static %}
+{% block baseAdmin %}
+<div class='d-flex border-bottom mb-3 mt-3 justify-content-between'>
+    <div class='d-flex'>
+        <div class="led mb-2"></div>
+        <p class='mb-1'>{{now|capfirst}}</p>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="row mt-4">
+        <div class="col-md-3 p-1 mb-1">
+            <div class="d-flex justify-content-between p-2 dash">
+                 <div>
+                    <p class="text-white mb-1">Directeurs</p>
+                    <p class="text-white text-center mb-1">{{directeursNum}}</p>
+                </div>
+                <div>
+                    <i class="bi bi-person dash-bi"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 p-1 mb-1">
+            <div class="d-flex justify-content-between p-2 dash">
+                 <div>
+                    <p class="text-white mb-1">Ecoles</p>
+                    <p class="text-white text-center mb-1">{{ecoleNum}}</p>
+                </div>
+                <div>
+                    <i class="bi bi-building dash-bi"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 p-1 mb-1">
+            <div class="d-flex justify-content-between p-2 dash">
+                 <div>
+                    <p class="text-white mb-1">Eleves</p>
+                    <p class="text-white text-center mb-1">{{eleveNum}}</p>
+                </div>
+                <div>
+                    <i class="bi bi-person dash-bi"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 p-1 mb-1">
+            <div class="d-flex justify-content-between p-2 dash">
+                 <div>
+                    <p class="text-white mb-1">Candidats</p>
+                    <p class="text-white text-center mb-1">{{candidatNum}}</p>
+                </div>
+                <div>
+                    <i class="bi bi-card-heading dash-bi"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-4 p-1 mb-1">
+            <div class="d-flex justify-content-between p-2 dash">
+                 <div>
+                    <p class="text-white mb-1">Classes</p>
+                    <p class="text-white text-center mb-1">{{classeNum}}</p>
+                </div>
+                <div>
+                    <i class="bi bi-briefcase dash-bi"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 p-1 mb-1">
+            <div class="d-flex justify-content-between p-2 dash">
+                 <div>
+                    <p class="text-white mb-1">Elections</p>
+                    <p class="text-white text-center mb-1">{{electionNum}}</p>
+                </div>
+                <div>
+                    <i class="bi bi-box dash-bi"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 p-1 mb-1">
+            <div class="d-flex justify-content-between p-2 dash">
+                 <div>
+                    <p class="text-white mb-1">Electeurs</p>
+                    <p class="text-white text-center mb-1">{{electeurNum}}</p>
+                </div>
+                <div>
+                    <i class="bi bi-person dash-bi"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script src="{% static '/js/formEcole.js' %}"></script>
+{% comment %} <script>
+    // Actualise la page toutes les 10 secondes
+    setInterval(function() {
+      location.reload();
+    }, 2000);
+  </script> {% endcomment %}
+{% endblock baseAdmin %}  

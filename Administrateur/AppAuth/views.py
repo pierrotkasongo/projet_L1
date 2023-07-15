@@ -15,7 +15,7 @@ class AuthViews(View):
         if user is not None:
             login(request, user)
             if user.status == 'admin':
-                return redirect('createReadEcole')
+                return redirect('home')
             elif user.status == 'directeur':
                 return redirect('createReadClasse')
             elif user.status == 'eleve':

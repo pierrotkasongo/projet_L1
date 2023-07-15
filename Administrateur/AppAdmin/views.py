@@ -6,10 +6,40 @@ from Administrateur.config import generate_password
 from Administrateur import settings
 from django.core.mail import send_mail
 from AppAuth.models import User
+from AppDirecteur.models import *
+from AppEleve.models import *
 from django.views import View
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from .producer import *
 
+from datetime import datetime
+import locale
+locale.setlocale(locale.LC_TIME, '')
+
+class HomeView(View):
+    def get(self, request):
+        title = 'Home'
+        now = datetime.today().strftime('%A %d %B %Y, %H:%M')
+        directeursNum = Directeur.objects.count()
+        ecoleNum = Ecole.objects.count()
+        eleveNum = Eleve.objects.count()
+        candidatNum = Candidat.objects.count()
+        classeNum = Classe.objects.count()
+        electionNum = Election.objects.count()
+        electeurNum = Electeur.objects.count()
+        return render(request,  'AppAdmin/home.html', 
+            {
+                'title':title,
+                'now': now,
+                'directeursNum':directeursNum,
+                'ecoleNum':ecoleNum,
+                'eleveNum':eleveNum,
+                'candidatNum':candidatNum,
+                'classeNum':classeNum,
+                'electionNum':electionNum,
+                'electeurNum':electeurNum
+            })
 
 class EcoleView(View):
     def get(self, request):
@@ -25,6 +55,8 @@ class EcoleView(View):
         ecole = request.POST.get('ecole').lower()
         if not Ecole.objects.filter(ecole=ecole):
             Ecole.objects.create(ecole=ecole)
+            message =f"ecole: {ecole}"
+            publish_message('ecoles', message)
             messages.success(request, "Enregistrement réussi")
         else:
             messages.error(request, "L'ecole existe deja !")
@@ -122,3 +154,4 @@ class DeleteDirecteurView(View):
     def get(self, request, id):
         get_object_or_404(User, id=id).delete()
         return redirect('readDirecteur')
+    

@@ -69,6 +69,46 @@ body {
     color: #333;
     margin-left: 6px;
     font-size: 13px;
+} 
+.active {
+    background-color: #2d66e2;
+    color: white !important;
+    border-radius: 7px;
+}
+.dash {
+    border-radius: 6px;
+    background-color: rgb(26, 67, 108);
+}
+.dash-bi {
+    font-size: 21px;
+    color: white;
+}
+.led {
+    height: 9px;
+    width: 9px;
+    border-radius: 30px;
+    background-color: red;
+    animation-duration: 1.5s;
+    animation-name: clignoter;
+    animation-iteration-count: infinite;
+    transition: none;
+    position: relative;
+    top: 7px;
+    right: 5px;
+}
+
+@keyframes clignoter {
+    0% {
+        opacity: 1;
+    }
+
+    40% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .active {

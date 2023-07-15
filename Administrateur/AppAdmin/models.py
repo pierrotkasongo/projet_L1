@@ -4,9 +4,8 @@ from AppAuth.models import User
 
 class Ecole(models.Model):
     ecole = models.CharField(max_length=200)
-
     def __str__(self):
-        return self.ecole
+        return self.ecole 
 
 class Directeur(models.Model):
     userId = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
