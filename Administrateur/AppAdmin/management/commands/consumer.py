@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from app.models import *
+from AppAdmin.models import *
 import pika
 import time
  
@@ -11,7 +11,7 @@ class Command(BaseCommand):
                 credentials = pika.PlainCredentials('guest', 'guest')
                 connection  = pika.BlockingConnection(
                     pika.ConnectionParameters(
-                        host='rabbitmq',
+                        host='localhost',
                         port=5672,
                         virtual_host='/',
                         credentials=credentials,
@@ -26,16 +26,16 @@ class Command(BaseCommand):
     def handle(self, *args, **options): 
         connection = self.connect()
         channel = connection.channel()
-        channel.basic_consume(queue='center', on_message_callback=self.get_data_center, auto_ack=True)
+        ''' channel.basic_consume(queue='center', on_message_callback=self.get_data_center, auto_ack=True)
         channel.basic_consume(queue='agent', on_message_callback=self.get_data_agent, auto_ack=True)
-        channel.basic_consume(queue='invoice', on_message_callback=self.get_data_invoice, auto_ack=True)
+        channel.basic_consume(queue='invoice', on_message_callback=self.get_data_invoice, auto_ack=True) '''
         self.stdout.write(
                 self.style.SUCCESS("Started Consuming....")
             )
         channel.start_consuming()
         connection.close()
         
-    def get_data_center(ch, method, properties, body, b):
+'''  def get_data_center(ch, method, properties, body, b):
         data = b.decode('utf-8')
         substrings = data.split(',')
         dict_data = {}
@@ -99,5 +99,5 @@ class Command(BaseCommand):
         )
         invoice.save()
         print("message received successfully")
-
+ '''
         

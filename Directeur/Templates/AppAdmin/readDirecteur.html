@@ -1,0 +1,55 @@
+{% extends 'BaseAdmin.html' %}
+{% load static %}
+{% block baseAdmin %}
+    <div class="table-responsive mt-4">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Postnom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Ecole</th>
+                <th scope="col" colspan="3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for objet in allDirecteur  %}
+                    <tr>
+                        <td data-label='Nom'><span class='span'>{{objet.userId.username | capfirst}}</span></td>
+                        <td data-label='Postnom'><span class='span'>{{objet.userId.first_name | capfirst}}</span></td>
+                        <td data-label='Prénom'><span class='span'>{{objet.userId.last_name | capfirst}}</span></td>
+                        <td data-label='Email'><span class='span'>{{objet.userId.email}}</span></td>
+                        <td data-label='Classe'><span class='span'>{{objet.ecoleId.ecole | capfirst}}</span></td>
+                        <td data-label='Actions'><i class="bi bi-archive table-icon-supprimer " data-bs-toggle="modal" data-bs-target="#supprimer{{objet.userId.id}}"></i> <i class="bi bi-pen table-icon-modifier" data-bs-toggle="modal" data-bs-target="#modifier{{objet.userId.id}}"></i></td>
+                        <div class="modal fade" id="supprimer{{objet.userId.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <i class="bi bi-exclamation-circle icon-modalSupprimer"></i>
+                                    <p class="message-modal mb- 3">Êtes-vous sûr de vouloir supprimer ?</p>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quitter</button>
+                                        <a href="{% url 'deleteDirecteur' objet.userId.id %}" class='btn btn-danger'>Oui</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="modifier{{objet.userId.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <i class="bi bi-exclamation-circle icon-modalSupprimer"></i>
+                                    <p class="message-modal mb-3">Êtes-vous sûr de vouloir modifier ?</p>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quitter</button>
+                                        <a href="{% url 'updateDirecteur' objet.userId.id %}" class='btn btn-danger'>Oui</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    </div>
+{% endblock baseAdmin %}  

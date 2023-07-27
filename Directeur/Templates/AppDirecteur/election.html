@@ -1,0 +1,44 @@
+{% extends 'baseDirecteur.html' %}
+{% load static %}
+{% block baseDirecteur %}
+    {% if messages %}
+    {% for message in messages %}
+        <div class=" mt-4 alert {{message.tags}} text-center mt-3">{{message}}</div>
+    {% endfor %}
+    {% endif %}
+    <form action="" method="POST" class='mt-3' id='formUser'>
+        {% csrf_token %}
+        <div class="mb-2">
+            <label for="nom" class='form-label'>Debut</label>
+            <input type="date" class='form-control mb-2' name='debut' id='nom'>
+            <small id='valid-nom'></small>
+        </div>
+        <div class="mb-2">
+            <label for="postnom" class='form-label'>Fin</label>
+            <input type="date" class='form-control mb-3' name='fin' id='postnom'>
+            <small id='valid-postnom'></small>
+        </div>
+        <input type="submit" class='w-100 btn btn-success' value='Démarrer'>
+    </form>
+    {% for objet in election %}
+        <div class="container-fluid classe-block p-2 mb-2 mt-3">      
+            <span class='name-classe'>{{objet.status | capfirst}} : Du {{objet.dateDebut|date:'l d F Y'}} Au {{objet.dateFin|date:'l d F Y'}}</span>
+            <span class='float-end'>
+                <i class="bi bi-calendar-check supprimer" data-bs-toggle="modal" data-bs-target="#supprimer{{objet.id}}"></i>
+            </span>
+            <div class="modal fade" id="supprimer{{objet.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <i class="bi bi-exclamation-circle icon-modalSupprimer"></i>
+                    <p class="message-modal mb-3">Êtes-vous sûr de vouloir clôturer l'élection ?</p>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quitter</button>
+                        <a href="{% url 'cloturerElection' objet.id %}" class='btn btn-danger'>Oui</a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <script src="{% static '/js/date.js' %}"></script>
+{% endblock baseDirecteur %}  

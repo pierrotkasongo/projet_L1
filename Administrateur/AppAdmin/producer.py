@@ -24,8 +24,8 @@ channel = connection.channel()
 channel.exchange_declare('operations', durable=True, exchange_type='topic')
 channel.queue_declare(queue= 'ecoles')
 channel.queue_bind(exchange='operations', queue='ecoles', routing_key='ecoles')
-''' channel.queue_declare(queue= 'paiement')
-channel.queue_bind(exchange='operations', queue='paiement', routing_key='paiement') '''
+channel.queue_declare(queue= 'directeurs')
+channel.queue_bind(exchange='operations', queue='directeurs', routing_key='directeurs')
 
 def publish_message(routing_key, message):
     try:
