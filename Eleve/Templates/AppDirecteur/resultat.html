@@ -1,0 +1,17 @@
+{% extends 'baseDirecteur.html' %}
+{% load static %}
+{% block baseDirecteur %}
+{% if resultat == True %}
+    {% for objet in election %}
+        <div class="container-fluid classe-block p-2 mb-2 mt-3">      
+            <span class='name-classe'><a href="{% url 'voix' objet.id %}" class='link-election'>{{objet.status | capfirst}} : Du {{objet.dateDebut|date:'l d F Y'}} Au {{objet.dateFin|date:'l d F Y'}}</a></span>
+        </div>
+    {% endfor %}
+{% else %}
+<div class="contaimer center-div">
+    <img src="{% static '/images/election.png' %}" class='img-fluid'>
+    <p class='text-center'>Aucun résultat disponible !</p>
+</div>
+{% endif %}
+{% endblock baseDirecteur %}  
+

@@ -105,22 +105,17 @@ class DirecteurView(View):
         ecoleId = Ecole.objects.get(id=ecole)
         password = generate_password()
         print("views generer",password)
-    
         if not User.objects.filter(email=email):
             user = User.objects.create_user(username=nom, first_name=potsnom, last_name=prenom, email=email, password=password, status='directeur')
             Directeur.objects.create(userId=user, ecoleId=ecoleId)
             
             name_ecole = ecoleId.ecole        
             message =f"nom: {nom}, potsnom: {potsnom}, prenom: {prenom}, email: {email}, password: {password}, ecole: {name_ecole}"
+            print(message)
             publish_message('directeurs', message)
-            
-            print("publish_message ",password)
             
             sujet = "Bienvenu dans Election app"
             message = "Votre adresse email : " + email + "\n" + "Votre mot de passe : " + password
-            
-            print("Email ",password)
-            
             expediteur = settings.EMAIL_HOST_USER
             destinateur = [email]
             send_mail(sujet, message, expediteur, destinateur, fail_silently=True)
@@ -129,20 +124,6 @@ class DirecteurView(View):
         else:
             messages.error(request, "L'utilisateur existe deja !")
         return redirect('createDirecteur')
-
-''' @receiver(post_save, sender=Directeur)
-def send_welcome_email(sender, instance, created, **kwargs):
-    if created:
-        user = instance.userId
-        email = user.email
-        password = generate_password()
-        user.set_password(password)
-        user.save()
-        sujet = "Bienvenu dans Election app"
-        message = "Votre adresse email : " + email + "\n" + "Votre mot de passe : " + password
-        expediteur = settings.EMAIL_HOST_USER
-        destinateur = [email]
-        send_mail(sujet, message, expediteur, destinateur, fail_silently=True) '''
 
 class UpdateDirecteurView(View):
     def get(self, request, id):

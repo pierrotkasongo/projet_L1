@@ -13,12 +13,12 @@ class AuthViews(View):
         user = authenticate(email=email, password=password)
         if user is not None:
             login(request, user)
-            if user.status == 'admin':
-                return redirect('home')
-            elif user.status == 'directeur':
+            # if user.status == 'admin':
+            #     return redirect('home')
+            if user.status == 'directeur':
                 return redirect('createReadClasse')
-            elif user.status == 'eleve':
-                return redirect('vote')
+            # elif user.status == 'eleve':
+            #     return redirect('vote')
         messages.error(request, "Informations incorrectes")
         
         return render(request, 'AppAuth/connexion.html', {'title': 'Connexion'})

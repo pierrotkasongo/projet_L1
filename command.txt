@@ -29,5 +29,5 @@ $ git stash show stash@{indice} : Voir une modification
 $ git stash pop stash@{indice} : Appliquer et supprimer un stash
 $ git remote add origin lien : Connexion à un dépôt distant
 $ git remote -v : Affichier les dépots distant de git 
-$ git push origin master : Pouser le dossier dans un depot distant
+$ git push origin master : Pousher le dossier dans un depot distant
 $ git pull origin master : Recuperer les modifications

@@ -1,0 +1,220 @@
+body {
+    font-family: 'Varela Round', sans-serif;
+    font-size: .900rem
+}
+
+.main-connexion {
+    min-height: 100dvh;
+    width: 100%;
+}
+.alert{
+    height: 30px;
+    line-height: 1px;
+    font-size: 13px;
+} 
+
+#valid-email,
+#valid-password,
+#valid-ecole,
+#valid-nom,
+#valid-postnom,
+#valid-prenom,
+#valid-email,
+#valid-search,
+#valid-classe {
+    font-size: 11px;
+    color: red;
+    letter-spacing: .4px;
+    display: none;
+}
+
+.navbar {
+    background-color: #202f5e !important;
+}
+
+.navbar-brand {
+    padding-top: .70rem;
+    padding-bottom: .70rem;
+    font-size: 13px !important;
+    letter-spacing: 0.3px;
+    font-weight: 550;
+}
+
+.navbar .navbar-toggler {
+    top: .25rem;
+    right: 0.3rem;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0;
+    background-color: rgb(243, 243, 243) !important;
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+    margin-left: 6px;
+    font-size: 13px;
+}
+
+.active {
+    background-color: #202f5e;
+    color: white !important;
+    border-radius: 7px;
+}
+
+th,
+td,
+tr {
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 0;
+}
+
+th {
+    font-weight: normal;
+    background-color: rgb(208, 216, 225) !important;
+    ;
+}
+
+.main-scroll {
+    height: 400px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+}
+
+.classe-block {
+    border-left: 2.5px solid #202f5e;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    text-decoration: none !important;
+}
+
+.name-classe{
+    font-size: 12.5px;
+    letter-spacing: .4px;
+    text-decoration: none;
+}
+
+.icon-modalSupprimer {
+    font-size: 40px;
+    color: #dc3545;
+    text-align: center;
+}
+
+.message-modal {
+    font-size: 13.5px;
+    text-align: center;
+}
+
+.icon-supprimer,
+.icon-modifier, 
+.supprimer{
+    cursor: pointer;
+    position: relative;
+}
+
+.icon-supprimer {
+    right: 40px;
+}
+.supprimer {
+    right: 0px;
+}
+
+.table-icon-supprimer,
+.table-icon-modifier,
+.bi-check-circle {
+    cursor: pointer;
+    position: relative;
+}
+
+.table-icon-supprimer {
+    right: 20px;
+}
+
+.table-icon-modifier {
+    left: 20px;
+}
+
+@media (max-width:768px) {
+    .table thead {
+        display: none;
+    }
+
+    .table,
+    .table tbody,
+    .table tr,
+    .table td {
+        display: block;
+        position: relative;
+    }
+
+    .table tr {
+        margin-bottom: 15px;
+    }
+
+    .table td {
+        text-align: right;
+        margin-right: 10px;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        padding-left: 10px;
+        text-align: left;
+    }
+
+    .table-icon-supprimer {
+        right: 40px;
+    }
+
+    .table-icon-modifier {
+        right: 40px;
+        left: -10px;
+    }
+
+    .span {
+        padding: 10px;
+    }
+}
+
+.count {
+    font-size: 12px;
+}
+
+.form-select{
+    font-size: 12.5px !important;
+    letter-spacing: .4px;
+}
+
+.form-select > option{
+    font-size: 12.3px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.center-div{
+    height: 300px;
+    width: 300px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.link-election{
+    text-decoration: none !important;
+}

@@ -15,11 +15,11 @@ class AuthViews(View):
         if user is not None:
             login(request, user)
             if user.status == 'admin':
-                return redirect('createReadEcole')
-            elif user.status == 'directeur':
-                return redirect('createReadClasse')
-            elif user.status == 'eleve':
-                return redirect('vote')
+                return redirect('home')
+            # elif user.status == 'directeur':
+            #     return redirect('createReadClasse')
+            # elif user.status == 'eleve':
+            #     return redirect('vote')
 
         messages.error(request, "Informations incorrectes")
         

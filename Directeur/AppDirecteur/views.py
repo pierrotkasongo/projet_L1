@@ -6,13 +6,16 @@ from django.contrib import messages
 from Directeur.config import generate_password 
 from django.core.mail import send_mail
 from AppAuth.models import User
+from AppDirecteur.models import *
 from Directeur import settings
 from django.db.models import Q
-from django.views import View
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.views import View
+
 from AppEleve.models import Electeur
 from django.db.models import Count
+from .producer import *
 
 class ClasseView(View):
     def get(self, request):
@@ -35,7 +38,11 @@ class ClasseView(View):
         classe = request.POST.get('classe').lower()
         if not Classe.objects.filter(classe=classe, ecoleId=directeur.ecoleId):
             Classe.objects.create(classe=classe, ecoleId=directeur.ecoleId)
+            message =f"classe: {classe}, ecole: {directeur.ecoleId}"
+            print(message)
+            publish_message('classes', message)
             messages.success(request, "Enregistremt réussi")
+            
         else:
             messages.error(request, "La classe existe déjà!")
         return redirect('createReadClasse')
@@ -84,35 +91,31 @@ class EleveView(View):
         
     def post(self, request):
         nom = request.POST.get('nom').lower()
-        postnom = request.POST.get('postnom').lower()
+        potsnom = request.POST.get('postnom').lower()
         prenom = request.POST.get('prenom').lower()
         email = request.POST.get('email').lower()
-        email = request.POST.get('email').lower() 
         classe = int(request.POST.get('classe'))
         classeId = Classe.objects.get(id=classe)
         password = generate_password()
         if not User.objects.filter(email=email):
-            user = User.objects.create_user(username=nom, first_name=postnom, last_name=prenom, email=email, password=password, status='eleve')
+            user = User.objects.create_user(username=nom, first_name=potsnom, last_name=prenom, email=email, password=password, status='eleve')
             Eleve.objects.create(userId=user, classeId=classeId)
+ 
+            name_classe = classeId.classe
+            message =f"nom: {nom}, potsnom: {potsnom}, prenom: {prenom}, email: {email}, password: {password}, classe: {name_classe}"
+            print(message)
+            publish_message('eleves', message)
+            sujet = "Bienvenu dans Election app"
+            message = "Votre adresse email : " + email + "\n" + "Votre mot de passe : " + password
+            expediteur = settings.EMAIL_HOST_USER
+            destinateur = [email]
+            send_mail(sujet, message, expediteur, destinateur, fail_silently=True)
+            
             messages.success(request, "Enregistrement réussi")
         else:
             messages.error(request, "L'utilisateur existe deja !")
         return redirect('createEleve')
 
-@receiver(post_save, sender=Eleve)
-def send_welcome_email(sender, instance, created, **kwargs):
-    if created:
-        user = instance.userId
-        email = user.email
-        password = generate_password()
-        user.set_password(password)
-        user.save()
-        sujet = "Bienvenu dans Election app"
-        message = "Votre adresse email : " + email + "\n" + "Votre mot de passe : " + password
-        expediteur = settings.EMAIL_HOST_USER
-        destinateur = [email]
-        print(password, email)
-        send_mail(sujet, message, expediteur, destinateur, fail_silently=True)
 
 class UpdateEleveView(View):
     def get(self, request, id):

@@ -22,10 +22,11 @@ def connect():
 connection = connect()
 channel = connection.channel()
 channel.exchange_declare('operations', durable=True, exchange_type='topic')
-channel.queue_declare(queue= 'ecoles')
-channel.queue_bind(exchange='operations', queue='ecoles', routing_key='ecoles')
-''' channel.queue_declare(queue= 'paiement')
-channel.queue_bind(exchange='operations', queue='paiement', routing_key='paiement') '''
+channel.queue_declare(queue= 'classes')
+channel.queue_bind(exchange='operations', queue='classes', routing_key='classes')
+
+channel.queue_declare(queue= 'eleves')
+channel.queue_bind(exchange='operations', queue='eleves', routing_key='eleves')
 
 def publish_message(routing_key, message):
     try:
