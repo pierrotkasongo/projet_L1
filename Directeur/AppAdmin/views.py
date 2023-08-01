@@ -107,27 +107,24 @@ class DirecteurView(View):
         if not User.objects.filter(email=email):
             user = User.objects.create_user(username=nom, first_name=postnom, last_name=prenom, email=email, password=password, status='directeur')
             Directeur.objects.create(userId=user, ecoleId=ecoleId)
-            
-            
-            
             messages.success(request, "Enregistrement réussi")
         else:
             messages.error(request, "L'utilisateur existe deja !")
         return redirect('createDirecteur')
 
-@receiver(post_save, sender=Directeur)
-def send_welcome_email(sender, instance, created, **kwargs):
-    if created:
-        user = instance.userId
-        email = user.email
-        password = generate_password()
-        user.set_password(password)
-        user.save()
-        sujet = "Bienvenu dans Election app"
-        message = "Votre adresse email : " + email + "\n" + "Votre mot de passe : " + password
-        expediteur = settings.EMAIL_HOST_USER
-        destinateur = [email]
-        send_mail(sujet, message, expediteur, destinateur, fail_silently=True)
+# @receiver(post_save, sender=Directeur)
+# def send_welcome_email(sender, instance, created, **kwargs):
+#     if created:
+#         user = instance.userId
+#         email = user.email
+#         password = generate_password()
+#         user.set_password(password)
+#         user.save()
+#         sujet = "Bienvenu dans Election app"
+#         message = "Votre adresse email : " + email + "\n" + "Votre mot de passe : " + password
+#         expediteur = settings.EMAIL_HOST_USER
+#         destinateur = [email]
+#         send_mail(sujet, message, expediteur, destinateur, fail_silently=True)
 
 class UpdateDirecteurView(View):
     def get(self, request, id):

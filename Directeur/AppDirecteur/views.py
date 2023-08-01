@@ -7,13 +7,16 @@ from Directeur.config import generate_password
 from django.core.mail import send_mail
 from AppAuth.models import User
 from AppDirecteur.models import *
+from AppEleve.models import *
 from Directeur import settings
 from django.db.models import Q
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.views import View
+from AppDirecteur.models import *
+from AppEleve.models import *
+from AppAdmin.models import *
 
-from AppEleve.models import Electeur
 from django.db.models import Count
 from .producer import *
 
@@ -41,6 +44,7 @@ class ClasseView(View):
             message =f"classe: {classe}, ecole: {directeur.ecoleId}"
             print(message)
             publish_message('classes', message)
+            publish_message('eleveclasses', message)
             messages.success(request, "Enregistremt réussi")
             
         else:
@@ -105,11 +109,12 @@ class EleveView(View):
             message =f"nom: {nom}, potsnom: {potsnom}, prenom: {prenom}, email: {email}, password: {password}, classe: {name_classe}"
             print(message)
             publish_message('eleves', message)
-            sujet = "Bienvenu dans Election app"
-            message = "Votre adresse email : " + email + "\n" + "Votre mot de passe : " + password
-            expediteur = settings.EMAIL_HOST_USER
-            destinateur = [email]
-            send_mail(sujet, message, expediteur, destinateur, fail_silently=True)
+            publish_message('eleveeleves', message)
+            # sujet = "Bienvenu dans Election app"
+            # message = "Votre adresse email : " + email + "\n" + "Votre mot de passe : " + password
+            # expediteur = settings.EMAIL_HOST_USER
+            # destinateur = [email]
+            # send_mail(sujet, message, expediteur, destinateur, fail_silently=True)
             
             messages.success(request, "Enregistrement réussi")
         else:
@@ -172,6 +177,10 @@ class ElectionView(View):
         if debut < fin or debut == fin :
             if not Election.objects.filter(ecoleId=directeur.ecoleId, status='en cours'):
                 Election.objects.create(ecoleId=directeur.ecoleId, dateDebut=debut, dateFin=fin)
+                message =f"ecole: {directeur.ecoleId}, debut:{debut}, fin: {fin}"
+                print(message)
+                publish_message('elections', message)
+                publish_message('eleveelections', message)
                 messages.success(request, "Election démarrer")
             else:
                 messages.error(request, "Election en cours !")
@@ -221,6 +230,11 @@ class CandidatView(View):
         except Eleve.DoesNotExist:
             return redirect('login')
         Candidat.objects.create(eleveId=eleveId, electionId=election)
+        
+        message = f"eleve:{eleveId.userId.username},election:{election.ecoleId.ecole}"
+        print(message)
+        publish_message('candidats', message)
+        publish_message('elevecandidats', message)
         messages.success(request, "Enregistrement réussi")
         return redirect('createReadCandidat')
 

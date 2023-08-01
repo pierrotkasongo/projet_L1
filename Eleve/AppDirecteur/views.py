@@ -3,10 +3,10 @@ from django.contrib.auth.decorators import login_required
 from AppAdmin.models import *
 from .models import *
 from django.contrib import messages
-from Election.config import generate_password
+#from Eleve.config import generate_password
 from django.core.mail import send_mail
 from AppAuth.models import User
-from Election import settings
+from Eleve import settings
 from django.db.models import Q
 from django.views import View
 from django.dispatch import receiver
@@ -35,6 +35,10 @@ class ClasseView(View):
         classe = request.POST.get('classe').lower()
         if not Classe.objects.filter(classe=classe, ecoleId=directeur.ecoleId):
             Classe.objects.create(classe=classe, ecoleId=directeur.ecoleId)
+            message =f"classe: {classe}, ecole: {directeur.ecoleId}"
+            print(message)
+            publish_message('classes', message)
+            publish_message('eleveclasses', message)
             messages.success(request, "Enregistremt réussi")
         else:
             messages.error(request, "La classe existe déjà!")
@@ -90,7 +94,7 @@ class EleveView(View):
         email = request.POST.get('email').lower() 
         classe = int(request.POST.get('classe'))
         classeId = Classe.objects.get(id=classe)
-        password = generate_password()
+        #password = generate_password()
         if not User.objects.filter(email=email):
             user = User.objects.create_user(username=nom, first_name=postnom, last_name=prenom, email=email, password=password, status='eleve')
             Eleve.objects.create(userId=user, classeId=classeId)
@@ -99,20 +103,7 @@ class EleveView(View):
             messages.error(request, "L'utilisateur existe deja !")
         return redirect('createEleve')
 
-@receiver(post_save, sender=Eleve)
-def send_welcome_email(sender, instance, created, **kwargs):
-    if created:
-        user = instance.userId
-        email = user.email
-        password = generate_password()
-        user.set_password(password)
-        user.save()
-        sujet = "Bienvenu dans Election app"
-        message = "Votre adresse email : " + email + "\n" + "Votre mot de passe : " + password
-        expediteur = settings.EMAIL_HOST_USER
-        destinateur = [email]
-        print(password, email)
-        send_mail(sujet, message, expediteur, destinateur, fail_silently=True)
+
 
 class UpdateEleveView(View):
     def get(self, request, id):

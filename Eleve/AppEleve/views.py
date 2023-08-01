@@ -4,7 +4,7 @@ from AppDirecteur.models import Eleve, Candidat, Election
 from .models import Electeur
 from django.views import View
 from django.db.models import Count
-
+from .producer import *
 
 class VoteView(View):
     def get(self, request):
@@ -27,6 +27,23 @@ class VoteView(View):
         })
 
 
+# class ElecteurView(View):
+#     def get(self, request, id):
+#         try:
+#             eleve = Eleve.objects.get(userId=request.user.id)
+#         except Eleve.DoesNotExist:
+#             return redirect('login')
+#         try:
+#             election = Election.objects.get(ecoleId=eleve.classeId.ecoleId, status='en cours')
+#         except Election.DoesNotExist:
+#             return redirect('login')
+#         #Electeur.objects.create(electionId=election, eleveId=eleve, candidatId=get_object_or_404(Candidat, eleveId__userId__id=id))
+#         message = f"eleve:{eleveId.userId.username},election:{election.ecoleId.ecole}, candidat:{candidat.eleveId.userId.username}"
+#         print(message)
+        
+#         return redirect('vote')
+
+
 class ElecteurView(View):
     def get(self, request, id):
         try:
@@ -37,8 +54,20 @@ class ElecteurView(View):
             election = Election.objects.get(ecoleId=eleve.classeId.ecoleId, status='en cours')
         except Election.DoesNotExist:
             return redirect('login')
-        Electeur.objects.create(electionId=election, eleveId=eleve, candidatId=get_object_or_404(Candidat, eleveId__userId__id=id))
+            
+        candidat = get_object_or_404(Candidat, eleveId__userId__id=id)
+        Electeur.objects.create(electionId=election, eleveId=eleve, candidatId=candidat)
+        
+        message = f"eleve:{eleve.userId.username},election:{election.ecoleId.ecole},candidat:{candidat.eleveId.userId.username}"
+        print(message)
+        publish_message('electeurs', message)
+        publish_message('electeursdirecteurs', message)
+        
         return redirect('vote')
+
+
+
+
 
 
 class EleveResultatView(View):

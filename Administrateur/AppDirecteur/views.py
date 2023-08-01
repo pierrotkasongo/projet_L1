@@ -35,8 +35,7 @@ class ClasseView(View):
         classe = request.POST.get('classe').lower()
         if not Classe.objects.filter(classe=classe, ecoleId=directeur.ecoleId):
             Classe.objects.create(classe=classe, ecoleId=directeur.ecoleId)
-            message =f"classe: {classe}, directeur: {directeur}"
-            publish_message('classes', message)
+            
             messages.success(request, "Enregistremt réussi")
         else:
             messages.error(request, "La classe existe déjà!")

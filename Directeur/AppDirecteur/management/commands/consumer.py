@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand
 from AppAdmin.models import *
+from AppDirecteur.models import *
+from AppEleve.models import *
 import pika
 import time
  
@@ -28,6 +30,7 @@ class Command(BaseCommand):
         channel = connection.channel()
         channel.basic_consume(queue='ecoles', on_message_callback=self.get_data_ecole, auto_ack=True)
         channel.basic_consume(queue='directeurs', on_message_callback=self.get_data_directeur, auto_ack=True)
+        channel.basic_consume(queue='electeursdirecteurs', on_message_callback=self.get_data_electeur, auto_ack=True)
         self.stdout.write(
                 self.style.SUCCESS("Started Consuming....")
             )
@@ -70,4 +73,28 @@ class Command(BaseCommand):
             ecoleId=get_ecole
         )
         directeur.save()
+        print("message received successfully")
+        
+    def get_data_electeur(ch, method, properties, body, b):
+        data = b.decode('utf-8')
+        substrings = data.split(',')
+        dict_data = {}
+        for item in substrings:
+            key, value = item.split(':')
+            dict_data[key.strip()] = value.strip() 
+            
+        eleve = dict_data['eleve']
+        eleveId = Eleve.objects.get(userId__username=eleve)
+        election = dict_data['election']
+        electionId = Election.objects.get(ecoleId__ecole=election)
+        candidat = dict_data['candidat']
+        candidatId = Candidat.objects.get(eleveId__userId__username=candidat)
+        print ("eleveId: ",eleveId," electionId: ",electionId," candidatId ", candidatId)
+        
+        savecandidat = Electeur(
+            eleveId=eleveId,
+            electionId=electionId,
+            candidatId=candidatId
+        )
+        savecandidat.save()
         print("message received successfully")

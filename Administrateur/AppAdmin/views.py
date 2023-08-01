@@ -57,6 +57,7 @@ class EcoleView(View):
             Ecole.objects.create(ecole=ecole)
             message =f"ecole: {ecole}"
             publish_message('ecoles', message)
+            publish_message('elevecoles', message)
             messages.success(request, "Enregistrement réussi")
         else:
             messages.error(request, "L'ecole existe deja !")
@@ -113,6 +114,7 @@ class DirecteurView(View):
             message =f"nom: {nom}, potsnom: {potsnom}, prenom: {prenom}, email: {email}, password: {password}, ecole: {name_ecole}"
             print(message)
             publish_message('directeurs', message)
+            publish_message('elevedirecteurs', message)
             
             sujet = "Bienvenu dans Election app"
             message = "Votre adresse email : " + email + "\n" + "Votre mot de passe : " + password

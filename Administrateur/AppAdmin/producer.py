@@ -22,10 +22,16 @@ def connect():
 connection = connect()
 channel = connection.channel()
 channel.exchange_declare('operations', durable=True, exchange_type='topic')
+#===========================Admin produit pour directeur==============================================
 channel.queue_declare(queue= 'ecoles')
 channel.queue_bind(exchange='operations', queue='ecoles', routing_key='ecoles')
 channel.queue_declare(queue= 'directeurs')
 channel.queue_bind(exchange='operations', queue='directeurs', routing_key='directeurs')
+#==========================Admin produit pour l'eleve====================================================
+channel.queue_declare(queue= 'elevecoles')
+channel.queue_bind(exchange='operations', queue='elevecoles', routing_key='elevecoles')
+channel.queue_declare(queue= 'elevedirecteurs')
+channel.queue_bind(exchange='operations', queue='elevedirecteurs', routing_key='elevedirecteurs')
 
 def publish_message(routing_key, message):
     try:
